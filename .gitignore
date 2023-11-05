@@ -1,0 +1,8 @@
+.DS_Store
+.netrwhist
+.mypy_cache
+
+lazy-lock.json
+coc-settings.json
+
+*.lock
