@@ -1,6 +1,6 @@
 local default_settings = {
   fileencoding = "utf-8",
-  -- Incremental live completion, default on `master`
+  -- Incremental live completion
   inccommand = "nosplit",
 
   -- Use system clipboard
@@ -9,14 +9,10 @@ local default_settings = {
   -- Hide the `-- INSERT --` messages
   showmode = false,
 
-  -- Highlight searches when done searching
   hlsearch = true,
-
-  -- Enable relative line numbers
-  -- nonumber = true,
   relativenumber = false,
 
-  -- Increase width of number columns and always show sign column
+  -- Always show the sign column so the buffer doesn't shift around
   signcolumn = "yes",
 
   -- For faster completion
@@ -25,48 +21,28 @@ local default_settings = {
 
   completeopt = { "menu", "menuone", "noselect" },
 
-  -- Tabs vs spaces, make indenting great again
+  -- Tabs vs spaces
   expandtab = true,
   softtabstop = 2,
   shiftwidth = 2,
-  -- nowrap = true,
-  -- noruler = true,
-  smartindent = true,
-  -- breakindent = true,
   tabstop = 2,
-  -- nocursorline = true,
+  smartindent = true,
 
-  -- Show tabs for open files on top of window
-  --[[ showtabline = 2, ]]
-
-  -- Enable using the mouse to click around
   mouse = "a",
 
-  -- Case insensitive searching
   ignorecase = true,
   smartcase = true,
 
-  -- Splitting, always below or to the right
   splitbelow = true,
   splitright = true,
 
-  -- Required for switching buffers and so on
   hidden = true,
 
-  -- Backups, swaps and history
   backup = false,
   swapfile = false,
   undofile = true,
 
-  -- How many rows/colums to show around cursor when jumping around
-  --[[ scrolloff = 6, ]]
-
-  -- Configure themes
   termguicolors = true,
-
-  -- Set folding to use Tree-Sitter
-  foldmethod = "manual",
-  foldexpr = "nvim_treesitter#foldexpr()",
 
   cmdheight = 1,
   laststatus = 3,
@@ -75,7 +51,7 @@ local default_settings = {
   fillchars = "vert:│,diff:╱",
 
   -- Set floating window to be slightly transparent
-  winbl = 10
+  winblend = 10,
 }
 
 for k, v in pairs(default_settings) do
@@ -84,31 +60,13 @@ end
 
 vim.opt.shortmess:append("c")
 
--- Show diagnostics on hover instead of as virtual text
-local hover_group = vim.api.nvim_create_augroup("on_hover", { clear = true })
-vim.api.nvim_create_autocmd("CursorHold", {
-  pattern = "*",
-  group = hover_group,
-  callback = function()
-    local opts = {
-      scope = "cursor",
-      close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-      border = "rounded",
-      source = "always",
-      prefix = " ",
-      focusable = false,
-    }
-    vim.diagnostic.open_float(nil, opts)
-  end,
-})
-
 -- Highlight on yank
 local highlight_group = vim.api.nvim_create_augroup("yank_highlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
   pattern = "*",
   group = highlight_group,
   callback = function()
-    vim.highlight.on_yank()
+    (vim.hl or vim.highlight).on_yank()
   end,
 })
 
